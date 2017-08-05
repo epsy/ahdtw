@@ -24,8 +24,54 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+
+        <section><pre><code>
+from prezutils import setup
+
+
+setup(
+    name="Awaits, how do they work?",
+    author="Yann Kaiser",
+    author_extra=[
+        Twitter("@YannKsr"),
+        Employer("Criteo", is_hiring=True, at="Palo Alto"),
+    ],
+)
+        </pre></code>
+        </section>
+
+        <section>
+            <section>
+                <h2>How they want you to use it</h2>
+                <pre><code>
+import asyncio
+
+import aiohttp
+
+
+async def get_things_from_internet():
+    await aiohttp.get_things_from_internet():
+        resp = await aiohttp.get('sonelink')
+        print(resp.json())
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>How you really want to use it</h2>
+                <pre><code>
+async def fib(n):
+    return await fib(-1), await fib(-2)
+
+
+print(something(fib(100)))
+                </code></pre>
+
+                <div class=fragment>
+                  <p>Well maybe not, but it'll help us understand.
+                  <p>You know, for science!
+                </div>
+            </section>
+
 			</div>
 		</div>
 
