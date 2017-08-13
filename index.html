@@ -20,12 +20,44 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+
+    <style type="text/css">
+      .reveal .columns {
+        display: flex;
+      }
+      .reveal .columns.individual-heights {
+        align-items: center;
+      }
+      .reveal .columns > pre {
+        display: flex;
+      }
+      .reveal .columns > pre > code {
+        flex: 1;
+      }
+      .reveal .columns > * {
+        margin: 5px;
+      }
+      .reveal .slides section .fragment.highlight,
+      .reveal .slides section .fragment.highlight-current,
+      .reveal .slides section .highlight {
+        visibility: visible;
+        opacity: 1;
+        background: hsla(60, 100%, 40%, 0.2);
+        margin: 0 -5px;
+        padding: 0 5px;
+      }
+      .reveal .slides section .fragment.highlight:not(.visible),
+      .reveal .slides section .fragment.highlight-current:not(.current-fragment) {
+        background: hsla(60, 100%, 40%, 0);
+      }
+    </style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
 
-        <section><pre><code>
+        <section>
+          <pre><code data-trim data-noescape>
 from prezutils import setup
 
 
@@ -35,42 +67,1102 @@ setup(
     author_extra=[
         Twitter("@YannKsr"),
         Employer("Criteo", is_hiring=True, at="Palo Alto"),
+        PyPI("clize", purpose="Turn functions into CLIs"),
     ],
 )
-        </pre></code>
+          </code></pre>
         </section>
 
         <section>
-            <section>
-                <h2>How they want you to use it</h2>
-                <pre><code>
+          <section>
+            <p>How they want us to use it
+            <pre><code data-trim data-noescape>
 import asyncio
 
 import aiohttp
 
 
-async def get_things_from_internet():
-    await aiohttp.get_things_from_internet():
-        resp = await aiohttp.get('sonelink')
-        print(resp.json())
-                </code></pre>
-            </section>
+async def get_things_from_internet(url):
+    async with aiohttp.get(url) as resp:
+        print(await resp.text())
+            </code></pre>
+            <pre class=fragment><code data-trim data-noescape>
+loop = asyncio.get_event_loop()
 
-            <section>
-                <h2>How you really want to use it</h2>
-                <pre><code>
+all_requests = asyncio.gather([
+    get_things_from_internet('https://www.google.com/')
+    get_things_from_internet('https://www.python.org/')
+])
+
+result = loop.run_until_complete(all_requests)
+print(result)
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <p>2011
+            <div class=fragment>
+              <p>Node JS
+              <p><img data-src="nodejs-trend.PNG" />
+            </div>
+          </section>
+
+          <section data-background-image="netscape.gif" data-background-size=contain>
+          </section>
+
+          <section>
+            <img data-src="headline-nodejsisc.PNG" />
+          </section>
+
+          <section>
+            <img data-src="reaction-1.PNG">
+          </section>
+
+          <section>
+            <p><a href="https://www.youtube.com/watch?v=rE3j_RHkqJc">
+              <img data-src="thought-germ.PNG" />
+            </a>
+            <p><small><a href="https://www.youtube.com/watch?v=rE3j_RHkqJc">CGP Grey</a></small>
+          </section>
+
+          <section>
+            <img data-src="ted-fib.PNG" />
+          </section>
+
+          <section data-background-image="wrong-doctor.jpg" data-background-size="contain" data-background-color="white">
+          </section>
+
+          <section data-background-image="doctor.jpg" data-background-size="contain" data-background-color="white">
+          </section>
+
+          <section data-background-image="time-machine.jpg">
+          </section>
+
+          <section>
+            <h2>How we really want to use it</h2>
+            <pre><code data-trim data-noescape>
 async def fib(n):
-    return await fib(-1), await fib(-2)
+    if n &lt; 2:
+        return n
+    return (await fib(n-1)) + (await fib(n-2))
+
+print(something_we_will_build_here(fib(100)))
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def recur_fib(n):
+    if n &lt; 2:
+        return n
+    return recur_fib(n-1) + recur_fib(n-2)
+            </code></pre>
+
+            <pre class=fragment><code data-trim data-noescape>
+def iter_fib(n):
+    n_2 = 0
+    n_1 = 1
+    for _ in range(n - 1):
+        n_2, n_1 = n_1, n_2+n_1
+    return n_1
+            </code></pre>
+          </section>
+
+          <section data-background-color=white>
+            <img data-src=fib-trivial.PNG />
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+<span class=fragment data-fragment-index=0>import dis
+
+@dis.dis</span>
+async def myfunc():
+    return await "some object"
+              </code></pre>
+              <pre class=fragment data-fragment-index=0><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 GET_AWAITABLE
+              4 LOAD_CONST               0 (None)
+              6 YIELD_FROM
+              8 RETURN_VALUE
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+  3           0 <span class=highlight>LOAD_CONST               1</span> ('some object')
+              2 GET_AWAITABLE
+              4 LOAD_CONST               0 (None)
+              6 YIELD_FROM
+              8 RETURN_VALUE
+              </code></pre>
+              <pre><code data-trim data-noescape>
+'some object'
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class="columns individual-heights">
+              <pre><code data-trim data-noescape>
+              GET_AWAITABLE
+              </code></pre>
+              <p>&asymp;</p>
+              <pre><code data-trim data-noescape>
+stack[0] = stack[0].__await__()
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 <span class=highlight>GET_AWAITABLE</span>
+              4 LOAD_CONST               0 (None)
+              6 YIELD_FROM
+              8 RETURN_VALUE
+              </code></pre>
+              <pre><code data-trim data-noescape>
+&lt;coroutine object&gt;
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 GET_AWAITABLE
+              4 <span class=highlight>LOAD_CONST               0</span> (None)
+              6 YIELD_FROM
+              8 RETURN_VALUE
+              </code></pre>
+              <pre><code data-trim data-noescape>
+&lt;coroutine object&gt;
+None
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 GET_AWAITABLE
+              4 LOAD_CONST               0 (None)
+              6 <span class=highlight>YIELD_FROM</span>
+              8 RETURN_VALUE
+              </code></pre>
+              <pre><code data-trim data-noescape>
+&lt;return value of the coro&gt;
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 GET_AWAITABLE
+              4 LOAD_CONST               0 (None)
+              6 YIELD_FROM
+              8 <span class=highlight>RETURN_VALUE</span>
+              </code></pre>
+              <pre></pre>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section class="slide-in">
+            <div class=columns>
+              <pre><code data-trim data-noescape>
+import dis
+
+@dis.dis
+def x():
+    yield from "some object"
+              </code></pre>
+
+              <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 ('some object')
+              2 <span class=highlight>GET_YIELD_FROM_ITER</span>
+              4 LOAD_CONST               0 (None)
+              6 <span class=highlight>YIELD_FROM</span>
+              8 RETURN_VALUE
+              </code></pre>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+  3           0 LOAD_CONST               1 (<span class=highlight>'some object'</span>)
+              2 <span class=highlight>GET_AWAITABLE</span>
+              4 LOAD_CONST               0 (None)
+              6 YIELD_FROM
+              8 RETURN_VALUE
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+class AdditionAwaitable:
+    def __init__(self, *args):
+        self.args = args
+
+    def __await__(self):
+        result = yield ('add', *self.args)
+        return result
+            </code></pre>
+
+            <pre class=fragment><code data-trim data-noescape>
+async def add(*args):
+    return await AdditionAwaitable(*args)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+async def add(*args):
+    return await AdditionAwaitable(*args)
+            </code></pre>
+            <pre><code data-trim data-noescape>
+              g = add(1, 2)
+            </code></pre>
+            <pre class=fragment><code data-trim data-noescape>
+&gt;&gt;&gt; g
+&lt;coroutine object add at 0x7f7f4a0ace60&gt;
+<span class=fragment>&gt;&gt;&gt; dir(g)
+['__await__', '__class__', '__del__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__name__', '__ne__', '__new__', '__qualname__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'close', 'cr_await', 'cr_code', 'cr_frame', 'cr_running', 'send', 'throw']</span>
+<span class=fragment>&gt;&gt;&gt; [attr for attr in dir(g) if not attr.startswith('_')]
+['close', 'cr_await', 'cr_code', 'cr_frame', 'cr_running', 'send', 'throw']</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape class="python">
+&gt;&gt;&gt; g.send("spam")
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+TypeError: can'<span style="display: none">'</span>t send non-None value to a just-started coroutine
+            </code></pre>
+            <pre class=fragment><code data-trim data-noescape>
+&gt;&gt;&gt; g.send(None)
+('add', 1, 2)
+            </code></pre>
+          </section>
+
+        </section>
+        <section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+&gt;&gt;&gt; g.send(None)
+<span class=highlight>('add', 1, 2)</span>
+            </code></pre>
+
+            <pre><code data-trim data-noescape>
+class AdditionAwaitable:
+    def __init__(self, *args):
+        self.args = args
+
+    def __await__(self):
+        result = yield <span class=highlight>('add', *self.args)</span>
+        return result
+            </code></pre>
+
+            <pre class><code data-trim data-noescape>
+async def add(*args):
+    return await AdditionAwaitable(*args)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+&gt;&gt;&gt; g.send(None)
+('add', 1, 2)
+            </code></pre>
+
+            <pre><code data-trim data-noescape>
+&gt;&gt;&gt; g.cr_frame
+&lt;frame object at 0x7f8c31d21dc8&gt;
+<span class=fragment>&gt;&gt;&gt; inspect.getframeinfo(g.cr_frame)
+Traceback(filename='add.py', lineno=10, function='add', code_context=['    result = await AdditionAwaitable(*args)\n'], index=0)</span>
+<span class=fragment>&gt;&gt;&gt; inspect.getframeinfo(g.cr_await.gi_frame)
+Traceback(filename='add.py', lineno=6, function='__await__', code_context=["        return (yield ('add', *self.args))\n"], index=0)</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+&gt;&gt;&gt; g.send(None)
+('add', 1, 2)
+&gt;&gt;&gt; g.send(3)
+<span class=fragment>Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+StopIteration: 3</span>
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <p>Recap:
+            <ul>
+              <li><code>await</code> is based on <code>yield from</code>
+              <li>async functions pause before running
+              <li><code>coro.send(...)</code> resumes such a function
+              <li>That function will progress until it hits a <code>yield</code>
+              <li><code>coro</code> will store where it is paused
+            </ul>
+            <p>Let's automate this!
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    msg = coro.send(None)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    msg = coro.send(None)
+    <span class=highlight>action, *args = msg
+    if action == 'add':
+        result = sum(args)</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    <span class=highlight>while True:</span>
+        msg = coro.send(None)
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    <span class=highlight>result = None</span>
+    while True:
+        msg = coro.send(<span class=highlight>result</span>)
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        <span class=highlight>try:</span>
+            msg = coro.send(result)
+        <span class=highlight>except StopIteration as e:
+            return e.value</span>
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        <span class=highlight>else:
+            coro.throw(ValueError(action))</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        else:
+            coro.throw(ValueError(action))
+
+<span class=highlight>print(run_task(add(1, 2)))</span>
+            </code></pre>
+
+            <pre class=fragment><code data-trim data-noescape>
+3
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+async def fib(n):
+    if n &lt; 2:
+        return n
+    result = await AdditionAwaitable(await fib(n - 2),
+                                     await fib(n - 1))
+    return result
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+cache = {}
 
 
-print(something(fib(100)))
-                </code></pre>
+async def fib(n):
+    if n in cache:
+        return cache[n]
+    if n &lt; 2:
+        return n
+    result = await AdditionAwaitable(await fib(n - 2),
+                                     await fib(n - 1))
+    cache[n] = result
+    return result
+            </code></pre>
 
-                <div class=fragment>
-                  <p>Well maybe not, but it'll help us understand.
-                  <p>You know, for science!
-                </div>
-            </section>
+            <pre class=fragment><code data-trim data-noescape>
+run_task(fib(100))
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section data-transition="slide-in">
+            <pre><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        else:
+            coro.throw(ValueError(action))
+            </code></pre>
+          </section>
+
+          <section>
+            <pre style="font-size: .44em"><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        elif action == 'sub':
+            a, b = args
+            result = a - b
+        else:
+            coro.throw(ValueError(action))
+            </code></pre>
+          </section>
+
+          <section>
+            <pre style="font-size: .35em"><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        elif action == 'sub':
+            a, b = args
+            result = a - b
+        elif action == 'mul':
+            a, b = args
+            result = a * b
+        elif action == 'div':
+            a, b = args
+            result = a / b
+        else:
+            coro.throw(ValueError(action))
+            </code></pre>
+          </section>
+
+          <section>
+            <pre style="font-size: .23em"><code data-trim data-noescape>
+def run_task(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        elif action == 'sub':
+            a, b = args
+            result = a - b
+        elif action == 'mul':
+            a, b = args
+            result = a * b
+        elif action == 'div':
+            a, b = args
+            result = a / b
+        elif action == 'mod':
+            a, b = args
+            result = a % b
+        elif action == 'divmod':
+            a, b = args
+            result = a / b, a % b
+        elif action == 'getattr':
+            obj, attr = args
+            result = getattr(obj, attr)
+        elif action == 'setattr':
+            obj, attr, val = args
+            result = setattr(obj, attr, val)
+        else:
+            coro.throw(ValueError(action))
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section data-background-image="containers.jpg">
+          </section>
+
+          <section>
+            <p>Deferred
+            <p>Future
+            <p>Promise
+            <p>
+            <p>Callbacks
+          </section>
+
+          <section>
+            <p>a Promise
+          </section>
+
+          <section data-background-image="egg-closed.jpg" data-background-size="contain" data-background-color="white">
+          </section>
+
+          <section data-background-image="egg-success.jpg" data-background-size="contain" data-background-color="white">
+          </section>
+
+          <section data-background-image="egg-fail.gif" data-background-size="contain" data-background-color="black">
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <pre style="font-size: .44em;"><code data-trim data-noescape>
+class Promise:
+    def __init__(self):
+        self.success = None
+        self.result = None
+
+    def set_success(self, value):
+        self.success = True
+        self.result = value
+        <span class=fragment data-fragment-index=0>return self</span>
+
+    def set_exception(self, exc):
+        self.success = False
+        self.result = exc
+        <span class=fragment data-fragment-index=0>return self</span>
+
+    <span class=fragment data-fragment-index=0>def __await__(self):
+        return (yield self)</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre style="font-size: .44em;"><code data-trim data-noescape>
+class Promise:
+    def __init__(self):
+        self.success = None
+        self.result = None
+            </code></pre>
+
+            <table>
+              <tr>
+                <th></th>
+                <th><code>p.success</code></th>
+                <th><code>p.result</code></th>
+              </tr>
+              <tr>
+                <td>&#x1F95A;</td>
+                <td><code>None</code></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&#x1f423;</td>
+                <td><code>True</code></td>
+                <td><code>12345</code></td>
+              </tr>
+              <tr>
+                <td>&#x1F373;</td>
+                <td><code>False</code></td>
+                <td><code>ValueError('oops')</code></td>
+              </tr>
+            </table>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        else:
+            coro.throw(ValueError(action))
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    result = None
+    while True:
+        try:
+            msg = coro.send(result)
+        except StopIteration as e:
+            return e.value
+<del>        action, *args = msg
+        if action == 'add':
+            result = sum(args)
+        else:
+            coro.throw(ValueError(action))</del>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    result = None
+    while True:
+        try:
+            <span class=highlight>promise</span> = coro.send(result)
+        except StopIteration as e:
+            return e.value
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    <span class=highlight>promise = Promise().set_success(None)</span>
+    while True:
+        try:
+            promise = coro.send(<span class=highlight>promise.result</span>)
+        except StopIteration as e:
+            return e.value
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    promise = Promise().set_success(None)
+    while True:
+        try:
+            if <span class=highlight>promise.success</span>:
+                promise = coro.send(promise.result)
+            else:
+                promise = coro.<span class=highlight>throw</span>(promise.result)
+        except StopIteration as e:
+            return e.value
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(coro):
+    promise = Promise().set_success(None)
+    while True:
+        <span class=highlight>if promise.success is None</span>:
+            ... # wait ??
+        try:
+            if promise.success:
+                promise = coro.send(promise.result)
+            else:
+                promise = coro.throw(promise.result)
+        except StopIteration as e:
+            return e.value
+            </code></pre>
+          </section>
+
+          <section data-background-image="whiterose.jpg">
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+coros = []
+
+
+def add_coro(coro):
+    <span class="fragment highlight-current">kickoff_promise</span> = Promise().set_success(None)
+    <span class="fragment highlight-current">result_promise</span> = Promise()
+    <span class="fragment highlight-current">coros.append</span>((coro, kickoff_promise, result_promise))
+    return result_promise
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def run(initial_coro):
+    final_result = add_coro(initial_coro)
+    <span class=fragment>while final_result.success is None:
+        ... # run coroutines</span>
+    <span class=fragment>if final_result.success:
+        return final_result.result
+    else:
+        raise final_result.result</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <p>select a coro whose promise has materialized</p>
+            <pre><code data-trim data-noescape>
+        for i, (<span class="fragment highlight-current">coro, awaited_promise, result_promise</span>) in enumerate(coros):
+            if awaited_promise.success is not None:
+                coros.pop(i)
+                break
+        <span class=fragment>else:
+            raise RuntimeException("Deadlock!")</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <p>run the coroutine</p>
+            <pre><code data-trim data-noescape>
+        # coro, awaited_promise, result_promise
+        try:
+            if awaited_promise.success:
+                new_promise = coro.send(awaited_promise.result)
+            else:
+                new_promise = coro.throw(awaited_promise.result)
+        <span class=fragment data-fragment-index=1>except StopIteration as e:
+            result_promise.set_success(e.value)</span>
+        <span class=fragment data-fragment-index=2>except BaseException as e:
+            result_promise.set_exception(e)</span>
+        <span class=fragment data-fragment-index=0>else:
+            coros.append((coro, new_promise, result_promise))</span>
+            </code></pre>
+          </section>
+
+          <section>
+            <pre style="font-size: .22em;"><code data-trim data-noescape>
+coros = []
+
+
+def add_coro(coro):
+    kickoff_promise = Promise().set_success(None)
+    result_promise = Promise()
+    coros.append((coro, kickoff_promise, result_promise))
+    return result_promise
+
+
+def run(initial_coro):
+    final_result = add_coro(initial_coro)
+    while final_result.success is None:
+        for i, (coro, awaited_promise, result_promise) in enumerate(coros):
+            if awaited_promise.success is not None:
+                coros.pop(i)
+                break
+        else:
+            raise RuntimeException("Deadlock!")
+        try:
+            if awaited_promise.success:
+                new_promise = coro.send(awaited_promise.result)
+            else:
+                new_promise = coro.throw(awaited_promise.result)
+        except StopIteration as e:
+            result_promise.set_success(e.value)
+        except BaseException as e:
+            result_promise.set_exception(e)
+        else:
+            coros.append((coro, new_promise, result_promise))
+    if final_result.success:
+        return final_result.result
+    else:
+        raise final_result.result
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+cache = {}
+
+
+async def fib(n):
+    if n in cache:
+        return cache[n]
+    if n &lt; 2:
+        return n
+    result = await fib(n-2) + await fib(n-1)
+    cache[n] = result
+    return result
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+cache = {}
+
+
+async def fib(n):
+    if n in cache:
+        return cache[n]
+    if n &lt; 2:
+        return n
+    result = await <span class=highlight>add_coro</span>(fib(n-2)) + await <span class=highlight>add_coro</span>(fib(n-1))
+    cache[n] = result
+    return result
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <p>Recap:
+          <ul>
+            <li>Promises simplify our task loop
+            <li>We made our task loop switch between coroutines
+            <li>Creating new tasks help us cheat the stack limit
+          </ul>
+        </section>
+
+        <section>
+          <section data-background-image="clock.jpg">
+          </section>
+
+          <section data-background-image="wakeup.jpg">
+          </section>
+
+          <section data-background-image="network.jpg" data-background-size=contain>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <pre><code data-trim data-noescape>
+async def echo_server(conn):
+    text = await read(conn)
+    while text.strip() != b'bye':
+        print(f"Received: {text}")
+        await write(conn, b'echo: ' + text)
+        text = await read(conn)
+    conn.close()
+            </code></pre>
+          </section>
+
+          <section>
+            <p>select
+            <p>epoll
+            <p>IOCP
+            <p>&hellip;
+          </section>
+
+          <section>
+            <pre style="font-size: .33em"><code data-trim data-noescape>
+def run(initial_coro):
+    final_result = add_coro(initial_coro)
+    while final_result.success is None:
+        for i, (coro, awaited_promise, result_promise) in enumerate(coros):
+            if awaited_promise.success is not None:
+                coros.pop(i)
+                break
+        else:
+            <span class="fragment highlight">raise RuntimeException("Deadlock!")</span>
+        try:
+            if awaited_promise.success:
+                new_promise = coro.send(awaited_promise.result)
+            else:
+                new_promise = coro.throw(awaited_promise.result)
+        except StopIteration as e:
+            result_promise.set_success(e.value)
+        except BaseException as e:
+            result_promise.set_exception(e)
+        else:
+            coros.append((coro, new_promise, result_promise))
+    if final_result.success:
+        return final_result.result
+    else:
+        raise final_result.result
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+        for i, (coro, awaited_promise, result_promise) in enumerate(coros):
+            if awaited_promise.success is not None:
+                coros.pop(i)
+                break
+        else:
+            <span class=highlight>if reads or writes:
+                check_socks(timeout=None)
+                continue</span>
+            else:
+                raise RuntimeException("Deadlock!")
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+reads = collections.defaultdict(list)
+writes = collections.defaultdict(list)
+            </code></pre>
+
+            <pre><code data-trim data-noescape>
+def readability(fd):
+    p = Promise()
+    reads[fd].append(p)
+    return p
+
+def writability(fd):
+    p = Promise()
+    writes[fd].append(p)
+    return p
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+async def read(f):
+    await readability(f)
+    return f.recv(4096)
+
+
+async def write(f, s):
+    await writability(f)
+    return f.send(s)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+def check_socks(timeout):
+    rlist, wlist, _ = \
+        select.select(list(reads), list(writes), [], timeout)
+
+    for fd in rlist:
+        for p in reads.pop(fd):
+            p.set_success(None)
+
+    for fd in wlist:
+        for p in writes.pop(fd):
+            p.set_success(None)
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+async def echo_server(conn):
+    text = await read(conn)
+    while text.strip() != b'bye':
+        print(f"Received: {text}")
+        await write(conn, b'echo: ' + text)
+        text = await read(conn)
+    conn.close()
+            </code></pre>
+            <pre class=fragment><code data-trim data-noescape>
+async def launch_server(func, port):
+    sock = socket.socket(
+        type=socket.SOCK_STREAM | <span class="fragment highlight">socket.SOCK_NONBLOCK</span>)
+    sock.bind(('127.0.0.1', port))
+    sock.listen()
+    print(f"Listening on port {port}")
+    <span class=fragment>while True:
+        await readability(sock)
+        conn, addr = sock.accept()
+        print(f'Connected to {addr}')
+        add_coro(func(conn))</span>
+            </code></pre>
+            <pre class=fragment><code data-trim data-noescape>
+run(launch_server(echo_server, 4321))
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <p>Recap:
+          <ul>
+            <li><code>select</code> &amp; co help us not make blocking calls
+            <li>We can upgrade our task loop to an event loop
+            <li>We can build friendlier tools using <code>select</code> and <code>Promise</code>s
+        </section>
+
+        <section>
+          <section data-background-image="thread.jpg" data-background-size="contain" data-background-color="white">
+          </section>
+
+          <section>
+            <div class=columns style="align-items: baseline">
+              <div style="flex: 1; text-align: left;">
+                <h2>Thank you!</h3>
+                <p><a href="https://twitter.com/YannKsr">@YannKsr</a>
+              </div>
+              <div style="text-align: right">
+                <h3>MORE!</h3>
+                <p>curio
+                <p>PEP 525
+                <p>ceval.c
+                <p>
+                <p>
+              </div>
+            </div>
+          </section>
+        </section>
 
 			</div>
 		</div>
@@ -83,6 +1175,9 @@ print(something(fib(100)))
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+        controls: false,
+        transition: "fade",
+        history: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
