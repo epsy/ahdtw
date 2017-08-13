@@ -18,7 +18,7 @@ def run(coro):
         try:
             msg = coro.send(result)
         except StopIteration as e:
-            return e
+            return e.value
         action, *args = msg
         if action == 'add':
             result = sum(args)

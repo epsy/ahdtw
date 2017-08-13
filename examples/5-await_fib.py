@@ -33,5 +33,7 @@ def run(coro):
         except StopIteration as e:
             return e.value
         action, *args = msg
+        if action == 'add':
+            result = sum(args)
         else:
             coro.throw(ValueError(action))
