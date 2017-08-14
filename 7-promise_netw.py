@@ -25,7 +25,7 @@ class Promise:
 
 async def echo_server(conn):
     text = await read(conn)
-    while text.strip() != b'bye':
+    while text and text.strip() != b'bye':
         print(f"Received: {text}")
         await write(conn, b'echo: ' + text)
         text = await read(conn)
