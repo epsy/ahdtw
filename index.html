@@ -71,6 +71,12 @@ setup(
     ],
 )
           </code></pre>
+          <aside class=notes>
+            Magnets!<br>
+            <br>
+            This desk is also available in HTML format here:
+            <a href="https://epsy.github.io/ahdtw">https://epsy.github.io/ahdtw</a><br>
+            Examples: <a href="https://github.com/epsy/ahdtw">https://github.com/epsy/ahdtw</a>
         </section>
 
         <section>
@@ -97,6 +103,10 @@ all_requests = asyncio.gather([
 result = loop.run_until_complete(all_requests)
 print(result)
             </code></pre>
+            <aside class=notes>
+              A typical usage of asyncio.  But we won't do this today.
+              Let's look at 2011.
+            </aside>
           </section>
         </section>
 
@@ -107,17 +117,36 @@ print(result)
               <p>Node JS
               <p><img data-src="nodejs-trend.PNG" />
             </div>
+            <aside class=notes>
+              NodeJS was just becoming relevant in 2011.  For those who don't
+              know, Node allows you to run JavaScript outside of a browser,
+              whether it is for webservers or for standalone tools.
+            </aside>
           </section>
 
           <section data-background-image="netscape.gif" data-background-size=contain>
+            <aside class=notes>
+              Now what's particular about JavaScript is that it was designed
+              for web browsers in mind.  A lot of the work done by JavaScript
+              programs would be in reaction to user events. <br>
+              You would set a handler function for "whenever this button is
+              clicked", and the browser would call this function when the user
+              clicks the button. <br>
+              You don't have to set up some loop that looks out for events and
+              call your function.  The browser would just do it for you.
+            </aside>
           </section>
 
-          <section>
-            <img data-src="headline-nodejsisc.PNG" />
+          <section data-background-image="headline-nodejsisc.PNG" data-background-size=contain>
+            <aside class=notes>
+              Now obviously NodeJS was posted online so people felt compelled to be really mean about it.
+            </aside>
           </section>
 
-          <section>
-            <img data-src="reaction-1.PNG">
+          <section data-background-image="reaction-1.PNG" data-background-size=contain>
+            <aside class=notes>
+              And people felt compelled to depend it.
+            </aside>
           </section>
 
           <section>
@@ -125,19 +154,65 @@ print(result)
               <img data-src="thought-germ.PNG" />
             </a>
             <p><small><a href="https://www.youtube.com/watch?v=rE3j_RHkqJc">CGP Grey</a></small>
+            <aside class=notes>
+              And so this went on and on for months such that any piece you'd
+              find in 2012 about NodeJS would be related in some way or another
+              to this blog post. <br>
+              <br>
+              So why am I bringing it up?  <br>
+              <br>
+              (Do check out <a href="https://www.youtube.com/watch?v=rE3j_RHkqJc">CGP Grey</a>'s video!)
+            </aside>
+          </section>
+
+          <section data-background-image="wrong-doctor.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              Early on in this article, the author points out that if you were
+              to run an expensive computation in NodeJS, you would render the
+              process unable to respond to other events, and that this is a
+              fatal flaw in Node's design.<br>
+              <br>
+              This isn't an unknown or arcane bug, this is literally the first
+              thing you're told not to do in an event loop such as NodeJS's. <br>
+              <br>Now if you went to this fellow...
+            </aside>
+          </section>
+
+          <section data-background-image="doctor.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              ... or rather this one, and asked them: <br>
+
+              <blockquote>
+                I've been told not to block the event loop. Now that I'm
+                blocking the event loop, things are breaking. What do I
+                do?
+              </blockquote>
+
+              They would tell you one simple thing: <br>
+              <strong>Don't do it!</strong>
           </section>
 
           <section>
             <img data-src="ted-fib.PNG" />
-          </section>
-
-          <section data-background-image="wrong-doctor.jpg" data-background-size="contain" data-background-color="white">
-          </section>
-
-          <section data-background-image="doctor.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              Guess what example the author used? Fibonacci numbers!<br>
+              <br>
+              So over the next months, everyone and their dog would come up
+              with ways to compute Fibonacci numbers and post them online.
+              Which is fine in of itself, but becomes a bit tired after a month
+              of them.<br>
+              <br>
+              Hey! I know what!
+            </aside>
           </section>
 
           <section data-background-image="time-machine.jpg">
+            <aside class=notes>
+              Let's steal Guido's time machine! (helpfully pictured above)<br>
+              <br>
+              Let's take our new and shiny Python 3.6 async/await and bring
+              them to 2011/2012 where we'll be part of this momentus debate!
+            </aside>
           </section>
 
           <section>
@@ -150,6 +225,9 @@ async def fib(n):
 
 print(something_we_will_build_here(fib(100)))
             </code></pre>
+            <aside class=notes>
+              Like this!
+            </aside>
           </section>
 
           <section>
@@ -168,10 +246,32 @@ def iter_fib(n):
         n_2, n_1 = n_1, n_2+n_1
     return n_1
             </code></pre>
+
+            <aside class=notes>
+              For those of you who have scrubbed it from your memory, Fibonacci
+              numbers are this sequence of numbers you can compute by making a
+              sum of the two previous numbers. <br>
+              It's usually spelled out like above, in doubly-recursive form.
+              You see it commonly in programming curriculums, as it brings up
+              the concept of recursion. <br>
+              In Python, you might be told about its iterative form, which is
+              nice for learning how to deal with recursion in Python (and more
+              specifically how to avoid it). <br>
+              If you have time, run <code>python -i 1-fibs.py</code> from the
+              examples folder and try then with n=10, 100 and 1000.
+            </aside>
           </section>
 
           <section data-background-color=white>
             <img data-src=fib-trivial.PNG />
+            <aside class=notes>
+              Of course, if you actually need Fibonacci numbers for something
+              practical, you can use its closed form which would compute it in
+              one go.<br>
+              <br>
+              But as my Haskell and Math teachers once said: We won't bother to
+              implement it because it's trivial.
+            </aside>
           </section>
         </section>
 
@@ -193,6 +293,15 @@ async def myfunc():
               8 RETURN_VALUE
               </code></pre>
             </div>
+            <aside class=notes>
+              Now this talk was labeled as language internals.  So we have to
+              have some bytecode.<br>
+              <br>
+              Here's a function that uses await on a string (see below!) and
+              returns the result.<br>
+              <br>
+              Let's walk through its bytecode.
+            </aside>
           </section>
 
           <section>
@@ -208,6 +317,12 @@ async def myfunc():
 'some object'
               </code></pre>
             </div>
+            <aside class=notes>
+              Python runs by following bytecode instructions (what your Python code is compiled to) in order and managing a part of memory designated for each function call (the stack)<br>
+              <br>
+              First we load a constant, the string <code>'some object'</code>
+              and put it on the stack.
+            </aside>
           </section>
 
           <section>
@@ -220,6 +335,11 @@ async def myfunc():
 stack[0] = stack[0].__await__()
               </code></pre>
             </div>
+            <aside class=notes>
+              <code>GET_AWAITABLE</code> is still not too complex. Most of the
+              time it is equivalent to the above: replace the value on the top
+              of the stack with the result of calling its __await__ method.
+            </aside>
           </section>
 
           <section>
@@ -235,6 +355,9 @@ stack[0] = stack[0].__await__()
 &lt;coroutine object&gt;
               </code></pre>
             </div>
+            <aside class=notes>
+              And so we get what's called a coroutine object.
+            </aside>
           </section>
 
           <section>
@@ -251,6 +374,13 @@ stack[0] = stack[0].__await__()
 None
               </code></pre>
             </div>
+            <aside class=notes>
+              <code>YIELD_FROM</code> requires a second value on the stack, so
+              it adds one. <br>
+              <br>
+              (From what I gather, that value is set to whatever must be passed
+              into the next generator when resuming this generator).
+            </aside>
           </section>
 
           <section>
@@ -266,6 +396,11 @@ None
 &lt;return value of the coro&gt;
               </code></pre>
             </div>
+            <aside class=notes>
+              <code>YIELD_FROM</code> is a bit more tricky, so we'll make abstraction of it for now.<br>
+              <br>
+              Let's just say that it replaces the two topmost items on the stack with a result.
+            </aside>
           </section>
 
           <section>
@@ -279,6 +414,13 @@ None
               </code></pre>
               <pre></pre>
             </div>
+            <aside class=notes>
+              Finally, <code>RETURN_VALUE</code> takes a one value on the stack
+              and makes it the return value of the function, destroying the
+              part of the stack dedicated to this function call in the process.<br>
+              <br>
+              One thing might jump at you: what is <code>YIELD_FROM</code> doing
+              here?
           </section>
         </section>
 
@@ -301,6 +443,16 @@ def x():
               8 RETURN_VALUE
               </code></pre>
             </div>
+            <aside class=notes>
+              <code>YIELD_FROM</code> is indeed also present when you use
+              <code>yield from</code> in a generator.  This is because they are
+              implemented the same way. <br>
+              <br>
+              (The only difference is a flag on the function that says whether
+              the object must be used with <code>for</code> loops, <code>yield
+              from</code> or <code>next()</code>, and the other one with
+              <code>await</code> or <code>send</code>.)
+            </aside>
           </section>
         </section>
 
@@ -313,6 +465,11 @@ def x():
               6 YIELD_FROM
               8 RETURN_VALUE
             </code></pre>
+            <aside class=notes>
+              Now obviously, strings don't have an <code>__await__</code>
+              method, so this will fail when we run it.  So let's replace
+              <code>'some object'</code> with something that has this method.
+            </aside>
           </section>
 
           <section>
@@ -330,6 +487,20 @@ class AdditionAwaitable:
 async def add(*args):
     return await AdditionAwaitable(*args)
             </code></pre>
+
+            <aside class=notes>
+              Remember how <code>await</code> used same same mechanisms as
+              <code>yield from</code>.  It's within <code>__await__</code> that
+              the veil of async/await is removed to reveal a generator! <br>
+              <br>
+              In it, we just return a tuple with the string <code>'add'</code>
+              and whichever values were passed when creating the object<br>
+              <br>
+              And since we're here to use <code>await</code>, let's await this
+              object.<br>
+              <br>
+              (This example is available as <code>3-await_add.py</code>)
+            </aside>
           </section>
 
           <section>
@@ -348,6 +519,18 @@ async def add(*args):
 <span class=fragment>&gt;&gt;&gt; [attr for attr in dir(g) if not attr.startswith('_')]
 ['close', 'cr_await', 'cr_code', 'cr_frame', 'cr_running', 'send', 'throw']</span>
             </code></pre>
+            <aside class=notes>
+              Let's see if we can use it! <br>
+              <br>
+              Calling <code>add</code> gives us a <em>coroutine object</em>.
+              Since we don't know what that is, let's try <code>dir()</code> on
+              it to check its attributes. <br>
+              <br>
+              There's a bit too many, but if we filter out those that start
+              with <code>_</code>, we find a few attributes of interest:<br>
+              A bunch of <code>cr_XXX</code> methods, plus <code>send</code>,
+              <code>throw</code> and <code>close</code>.
+            </aside>
           </section>
 
           <section>
@@ -361,6 +544,10 @@ TypeError: can'<span style="display: none">'</span>t send non-None value to a ju
 &gt;&gt;&gt; g.send(None)
 ('add', 1, 2)
             </code></pre>
+
+            <aside class=notes>
+              Let's send something to it!
+            </aside>
           </section>
 
         </section>
@@ -386,6 +573,13 @@ class AdditionAwaitable:
 async def add(*args):
     return await AdditionAwaitable(*args)
             </code></pre>
+
+            <aside class=notes>
+              When we send something into it, it runs all the way until into
+              the <code>__await__</code> method, where it encounters a
+              <code>yield</code>.  And the value that was yielded is the value
+              that we get!
+            </aside>
           </section>
 
           <section>
@@ -394,7 +588,7 @@ async def add(*args):
 ('add', 1, 2)
             </code></pre>
 
-            <pre><code data-trim data-noescape>
+            <pre><code data-trim data-noescape style="white-space: pre-wrap">
 &gt;&gt;&gt; g.cr_frame
 &lt;frame object at 0x7f8c31d21dc8&gt;
 <span class=fragment>&gt;&gt;&gt; inspect.getframeinfo(g.cr_frame)
@@ -402,6 +596,16 @@ Traceback(filename='add.py', lineno=10, function='add', code_context=['    resul
 <span class=fragment>&gt;&gt;&gt; inspect.getframeinfo(g.cr_await.gi_frame)
 Traceback(filename='add.py', lineno=6, function='__await__', code_context=["        return (yield ('add', *self.args))\n"], index=0)</span>
             </code></pre>
+
+            <aside class=notes>
+              Let's have a look at those internal attributes then.  If we use
+              the <code>inspect</code> modue to look at <code>cr_frame</code>,
+              we get an object that shows us where Python left off in <code>
+              add</code>. <br>
+              <br>
+              Digging a little deeper, <code>cr_await</code> gives us the
+              object being awaited, and <code>cr_await.gi_frame</code> gives us
+              where we are paused in the <code>__await__</code> generator.
           </section>
 
           <section>
@@ -413,6 +617,16 @@ Traceback(filename='add.py', lineno=6, function='__await__', code_context=["    
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
 StopIteration: 3</span>
             </code></pre>
+
+            <aside class=notes>
+              Anyhow, that generator is asking us something, so let's be nice
+              and give it the answer! <br>
+              <br>
+              The generators and coroutines resume and eventually throw a
+              <code>StopIteration</code> at us, with the result as the
+              exception's value.  Now they don't mean to be rude, it's just
+              what generators do when they've finished.
+            </aside>
           </section>
         </section>
 
@@ -427,6 +641,14 @@ StopIteration: 3</span>
               <li><code>coro</code> will store where it is paused
             </ul>
             <p>Let's automate this!
+
+            <aside class=notes>
+              #4: It will do so going through <code>await</code>s and
+              <code>yield from</code>s. It's only when it finds a
+              <code>yield</code> that it will pause. <br>
+              <br>
+              But we're here to make programs, so let's automate this!
+            </aside>
           </section>
         </section>
 
@@ -436,6 +658,10 @@ StopIteration: 3</span>
 def run_task(coro):
     msg = coro.send(None)
             </code></pre>
+
+            <aside class=notes>
+              Any good program has functions, so here's a function that uses <code>send</code>
+            </aside>
           </section>
 
           <section>
@@ -446,6 +672,10 @@ def run_task(coro):
     if action == 'add':
         result = sum(args)</span>
             </code></pre>
+
+            <aside class=notes>
+              We need to process whatever is yielded from the coroutine.
+            </aside>
           </section>
 
           <section>
@@ -457,6 +687,9 @@ def run_task(coro):
         if action == 'add':
             result = sum(args)
             </code></pre>
+            <aside class=notes>
+              We need to do this an indefinite amount of times.
+            </aside>
           </section>
 
           <section>
@@ -469,6 +702,9 @@ def run_task(coro):
         if action == 'add':
             result = sum(args)
             </code></pre>
+            <aside class=notes>
+              We need to pass the result back to the coroutine.
+            </aside>
           </section>
 
           <section>
@@ -484,6 +720,9 @@ def run_task(coro):
         if action == 'add':
             result = sum(args)
             </code></pre>
+            <aside class=notes>
+              We need to catch the final <code>StopIteration</code> and return its value.
+            </aside>
           </section>
 
           <section>
@@ -501,6 +740,10 @@ def run_task(coro):
         <span class=highlight>else:
             coro.throw(ValueError(action))</span>
             </code></pre>
+            <aside class=notes>
+              And let's throw an excepton into the coroutine if we don't
+              recognize the action we've been given.
+            </aside>
           </section>
 
           <section>
@@ -524,6 +767,12 @@ def run_task(coro):
             <pre class=fragment><code data-trim data-noescape>
 3
             </code></pre>
+
+            <aside class=notes>
+              So let's run it.  (Use <code>4-await_run.py</code>.) <br>
+              <br>
+              It works!  (It usually does in slides.)
+            </aside>
           </section>
         </section>
 
@@ -537,6 +786,10 @@ async def fib(n):
                                      await fib(n - 1))
     return result
             </code></pre>
+
+            <aside class=notes>
+              And we can already run a Fibonacci function.  Great, isn't it?
+            </aside>
           </section>
 
           <section>
@@ -558,6 +811,15 @@ async def fib(n):
             <pre class=fragment><code data-trim data-noescape>
 run_task(fib(100))
             </code></pre>
+
+            <aside class=notes>
+              But let's cheat a bit and add some caching so we don't recompute
+              the same values twice.<br>
+              <br>
+              If we run it (<code>5-await_fib.py</code>), it works well for
+              small numbers, but if we use a bigger number (try 10000), we will
+              exceed the stack limit.  Oops!
+            </aside>
           </section>
         </section>
 
@@ -577,6 +839,11 @@ def run_task(coro):
         else:
             coro.throw(ValueError(action))
             </code></pre>
+
+            <aside class=notes>
+              Let's look at our task loop again.  It's a bit short on features.
+              We can only sum things with it.
+            </aside>
           </section>
 
           <section>
@@ -597,6 +864,10 @@ def run_task(coro):
         else:
             coro.throw(ValueError(action))
             </code></pre>
+
+            <aside class=notes>
+              How about subtraction?
+            </aside>
           </section>
 
           <section>
@@ -623,6 +894,10 @@ def run_task(coro):
         else:
             coro.throw(ValueError(action))
             </code></pre>
+
+            <aside class=notes>
+              Multiplication and division?
+            </aside>
           </section>
 
           <section>
@@ -661,32 +936,65 @@ def run_task(coro):
         else:
             coro.throw(ValueError(action))
             </code></pre>
+
+            <aside class=notes>
+              Is this maintainable? No.
+            </aside>
           </section>
         </section>
 
         <section>
           <section data-background-image="containers.jpg">
+            <aside class=notes>
+              Containers were invented as a way to standardize shipments. <br>
+              Instead of having carriers handle e.g. sacks of potatoes
+              differently from a car, the sender would stick their merchendize
+              in a standardized container. <br>
+              This way, carriers only have to worry about carrying one (or
+              several) boxes. <br>
+              We should find a way to have our own versions of these boxes for
+              our task loop.
+            </aside>
           </section>
 
           <section>
             <p>Deferred
             <p>Future
             <p>Promise
-            <p>
             <p>Callbacks
+
+            <aside class=notes>
+              Fortunately for us several have already been thought up.  The
+              first three are roughly the same thing, but I would say one's
+              name captures the concept the best.
+            </aside>
           </section>
 
           <section>
             <p>a Promise
+
+            <aside class=notes>
+              Everyone can relate to a promise. Everyone has made one,
+              fulfilled one or failed to fulfill one at some point.
+            </aside>
           </section>
 
           <section data-background-image="egg-closed.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              Picture an egg.  This will be our instance of a promise.  A function returned this egg.
+            </aside>
           </section>
 
           <section data-background-image="egg-success.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              The promise can be fulfilled.  In the case of an egg it can be chicks, or an omelette depending on your preferences.
+            </aside>
           </section>
 
           <section data-background-image="egg-fail.gif" data-background-size="contain" data-background-color="black">
+            <aside class=notes>
+              Or the promise could fail, and if you don't handle it you might find yourself stuck in a bad infomercial forever.
+            </aside>
           </section>
 
         </section>
@@ -712,6 +1020,18 @@ class Promise:
     <span class=fragment data-fragment-index=0>def __await__(self):
         return (yield self)</span>
             </code></pre>
+
+            <aside class=notes>
+              So what does this look like in Python? <br>
+              We can have it represented as an object with two properties.  One
+              that indicates the status of the promise (waiting / success /
+              failure), and one with the result value or exception, depending
+              on status. (See table below) <br>
+              <br>
+              We can add <code>__await__</code> so we can use
+              <code>await</code> on <code>Promise</code>s if we want to yield
+              them to the task loop.
+            </aside>
           </section>
 
           <section>
@@ -763,6 +1083,10 @@ def run(coro):
         else:
             coro.throw(ValueError(action))
             </code></pre>
+
+            <aside class=notes>
+              Let's update our task loop!
+            </aside>
           </section>
 
           <section>
@@ -780,6 +1104,10 @@ def run(coro):
         else:
             coro.throw(ValueError(action))</del>
             </code></pre>
+
+            <aside class=notes>
+              We don't want to handle specific messages anymore.
+            </aside>
           </section>
 
           <section>
@@ -792,6 +1120,10 @@ def run(coro):
         except StopIteration as e:
             return e.value
             </code></pre>
+
+            <aside class=notes>
+              We deal with promises now!
+            </aside>
           </section>
 
           <section>
@@ -804,6 +1136,10 @@ def run(coro):
         except StopIteration as e:
             return e.value
             </code></pre>
+
+            <aside class=notes>
+              Let's feed the promise's result back to the coroutine we're running...
+            </aside>
           </section>
 
           <section>
@@ -819,6 +1155,11 @@ def run(coro):
         except StopIteration as e:
             return e.value
             </code></pre>
+
+            <aside class=notes>
+              ... or throw it in case of failure.
+
+              Good! But we're omitting something important here...
           </section>
 
           <section>
@@ -836,9 +1177,21 @@ def run(coro):
         except StopIteration as e:
             return e.value
             </code></pre>
+
+            <aside class=notes>
+              What would happen if we we found a promise that hasn't been
+              completed yet?
           </section>
 
           <section data-background-image="whiterose.jpg">
+            <aside class=notes>
+              In fact, what's there to be waited on?  The only thing that's
+              running is our task loop function.  Nothing will complete.  The
+              entire concept of waiting doesn't even make sense. <br>
+              <br>
+              For it to make sense, we need to upgrade our loop to handle more
+              than one coroutine.
+            </aside>
           </section>
         </section>
 
@@ -854,6 +1207,14 @@ def add_coro(coro):
     <span class="fragment highlight-current">coros.append</span>((coro, kickoff_promise, result_promise))
     return result_promise
             </code></pre>
+
+            <aside class=notes>
+              To do this we need to keep state about all the coroutines we'll
+              run.  For each of them we'll store: What promise it is currently
+              waiting on (initially resolved to <code>None</code>), and a
+              promise that will hold the result of the coroutine.  We return
+              that promise so it can be awaited.
+            </aside>
           </section>
 
           <section>
@@ -867,6 +1228,15 @@ def run(initial_coro):
     else:
         raise final_result.result</span>
             </code></pre>
+
+            <aside class=notes>
+              Let's rewrite the loop function. <br>
+              <br>
+              First of all we can add the initial coroutine to the list of
+              tasks.  When the promise for that coroutine is fulfilled, we know
+              we're done. <br>
+              Until then we loop and run coroutines.
+            </aside>
           </section>
 
           <section>
@@ -879,6 +1249,16 @@ def run(initial_coro):
         <span class=fragment>else:
             raise RuntimeException("Deadlock!")</span>
             </code></pre>
+
+            <aside class=notes>
+              In that loop we first need to pick which coroutine to run.  We
+              just pick the first one for which the promise it waits on has
+              completed. <br>
+              If there are none available, our program has a problem:  Every
+              coroutine is waiting on another, so we'll just error out at that point. <br>
+              <br>
+              (Note: using array-backed lists like Python's are highly inefficient for this.)
+            </aside>
           </section>
 
           <section>
@@ -897,6 +1277,14 @@ def run(initial_coro):
         <span class=fragment data-fragment-index=0>else:
             coros.append((coro, new_promise, result_promise))</span>
             </code></pre>
+
+            <aside class=notes>
+              Then we run the coroutine we picked. <br>
+              We put it back in <code>coros</code> when it yields a new
+              promise.  We put its reseult in the promise when it completes
+              (<code>StopIteration</code>), and we do the same when any other
+              exception arises.
+            </aside>
           </section>
 
           <section>
@@ -936,6 +1324,10 @@ def run(initial_coro):
     else:
         raise final_result.result
             </code></pre>
+
+            <aside class=notes>
+              The whole thing.  Let's put it to use...
+            </aside>
           </section>
         </section>
 
@@ -954,6 +1346,10 @@ async def fib(n):
     cache[n] = result
     return result
             </code></pre>
+
+            <aside class=notes>
+              We can run our existing <code>fib</code> function as-is...
+            </aside>
           </section>
 
           <section>
@@ -970,6 +1366,18 @@ async def fib(n):
     cache[n] = result
     return result
             </code></pre>
+
+            <pre class=fragment><code data-trim data-noescape>
+run(fib(10000))
+            </code></pre>
+
+            <aside class=notes>
+              ... but let's use our new multitasking ability. <br>
+              <br>
+              If we run it (<code>6-promise_fib</code>), we can ask for numbers
+              above 10000 without issue (other than becoming slow at higher
+              values).
+            </aside>
           </section>
         </section>
 
@@ -980,16 +1388,30 @@ async def fib(n):
             <li>We made our task loop switch between coroutines
             <li>Creating new tasks help us cheat the stack limit
           </ul>
+
+          <aside class=notes>
+            But what's that sound in the distance?
+          </aside>
         </section>
 
         <section>
           <section data-background-image="clock.jpg">
+            <aside class=notes>
+              An alarm clock?!  I was asleep?
+            </aside>
           </section>
 
           <section data-background-image="wakeup.jpg">
+            <aside class=notes>
+              I was dreaming of using <code>await</code>s to compute Fibonacci
+              numbers.  How weird...
+            </aside>
           </section>
 
           <section data-background-image="network.jpg" data-background-size=contain>
+            <aside class=notes>
+              I mean we have the internet now, why wouldn't we want to do something about that?
+            </aside>
           </section>
         </section>
 
@@ -1004,6 +1426,15 @@ async def echo_server(conn):
         text = await read(conn)
     conn.close()
             </code></pre>
+
+            <aside class=notes>
+              Why don't we try to write something so we can use awaits like
+              this? <br>
+              <br>
+              The new thing here is that we'll be waiting on something external
+              to our program: the network.  But we can't wait for that in each
+              coroutine, we have to put all the waiting together.
+            </aside>
           </section>
 
           <section>
@@ -1011,6 +1442,15 @@ async def echo_server(conn):
             <p>epoll
             <p>IOCP
             <p>&hellip;
+
+            <aside class=notes>
+              To do that, several options exist depending on the platform. The
+              thing is however, that these functions block until something is
+              available to do on the network. <br>
+              <br>
+              But since they pool all the waiting in one place, we can have our
+              task loop (now <em>event loop</em>!) manage it.
+            </aside>
           </section>
 
           <section>
@@ -1040,6 +1480,17 @@ def run(initial_coro):
     else:
         raise final_result.result
             </code></pre>
+
+            <aside class=notes>
+              Let's do that waiting while we're blocked. <br>
+              <br>
+              (Note: in an actual program you would want to check regularily,
+              regardless of whether you're completely blocked or not.  One
+              coroutine could keep being ready again and again, causing our
+              network check to be effetively starved out.  The upside is that
+              the event loop that you write or use is in control of this sort
+              of thing, as opposed to the OS.)
+            </aside>
           </section>
 
           <section>
@@ -1055,6 +1506,11 @@ def run(initial_coro):
             else:
                 raise RuntimeException("Deadlock!")
             </code></pre>
+
+            <aside class=notes>
+              Let's replace the hilighted code from before with a function call
+              to check the network.
+            </aside>
           </section>
 
           <section>
@@ -1064,29 +1520,44 @@ writes = collections.defaultdict(list)
             </code></pre>
 
             <pre><code data-trim data-noescape>
-def readability(fd):
+def readability(sock):
     p = Promise()
-    reads[fd].append(p)
+    reads[sock].append(p)
     return p
 
-def writability(fd):
+def writability(sock):
     p = Promise()
-    writes[fd].append(p)
+    writes[sock].append(p)
     return p
             </code></pre>
+
+            <aside class=notes>
+              First we need more state.  Let's make a pair of functions that
+              return a promise and records an intent to read or write to a
+              socket. <br>
+              <br>
+              We would make the event loop complete the promises when
+              the socket becomes readable/writable.
+            </aside>
           </section>
 
           <section>
             <pre><code data-trim data-noescape>
-async def read(f):
-    await readability(f)
+async def read(sock):
+    await readability(sock)
     return f.recv(4096)
 
 
-async def write(f, s):
-    await writability(f)
-    return f.send(s)
+async def write(sock, to_send):
+    await writability(sock)
+    return f.send(to_send)
             </code></pre>
+
+            <aside class=notes>
+              We can make it nicer by implementing a <code>read</code> and
+              <code>write</code> coroutine that await readability/writability
+              and do the actual read/write operation.
+            </aside>
           </section>
 
           <section>
@@ -1103,6 +1574,16 @@ def check_socks(timeout):
         for p in writes.pop(fd):
             p.set_success(None)
             </code></pre>
+
+            <aside class=notes>
+              And finally in the function our event loop calls to check the
+              network, we use <cde>select</code> (UNIX) with the sockets that
+              are being waited on. <br>
+              <code>select</code> waits until one of the sockets becomes
+              available and then returns a list of the sockets that are
+              available. <br>
+              When that happens we let the promises complete.
+            </aside>
           </section>
 
           <section>
@@ -1131,6 +1612,32 @@ async def launch_server(func, port):
             <pre class=fragment><code data-trim data-noescape>
 run(launch_server(echo_server, 4321))
             </code></pre>
+
+            <aside class=notes>
+              Great, we just need to launch our server. <br>
+              To do that, we'll have to deal with the <code>socket</code>
+              module. <br>
+              To put it shortly, we listen on the network for any connecting
+              client.  When the socket we use to listen becomes readable, this
+              means a client is attempting to connect.  We accept it
+              and get a socket for the resulting connection, which we pass to
+              the function we're using as server (that would be <code>echo_server</code>).
+            </aside>
+          </section>
+
+          <section>
+            <pre><code data-trim data-noescape>
+run(launch_server(echo_server, 4321))
+            </code></pre>
+
+            <aside class=notes>
+              We can run it (<code>7-promise_netw.py</code>), and if we use
+              <code>netcat</code> (<code>nc 127.0.0.1 4321</code>), we can
+              write one-line messages that will be echoed back until we say
+              bye. <br>
+              You can even connect multiple instances of netcat to it and it
+              will continue to serve both.
+            </aside>
           </section>
         </section>
 
@@ -1140,10 +1647,14 @@ run(launch_server(echo_server, 4321))
             <li><code>select</code> &amp; co help us not make blocking calls
             <li>We can upgrade our task loop to an event loop
             <li>We can build friendlier tools using <code>select</code> and <code>Promise</code>s
+          </ul>
         </section>
 
         <section>
           <section data-background-image="thread.jpg" data-background-size="contain" data-background-color="white">
+            <aside class=notes>
+              That's as far as we'll pull on this thread for today.  Thanks for reading!
+            </aside>
           </section>
 
           <section>
@@ -1180,6 +1691,7 @@ run(launch_server(echo_server, 4321))
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
         controls: true,
+        showNotes: true,
         transition: "fade",
         history: true,
 				dependencies: [
